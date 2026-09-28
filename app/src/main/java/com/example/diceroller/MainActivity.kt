@@ -18,30 +18,52 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            DiceRollerTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+            DiceRollerTheme{
+                DiceRollerApp()
                 }
             }
         }
     }
 }
 
+
+
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+fun DiceWithButtonAndImage(modifier: Modifier = Modifier) {
+    var result by remember {multiStateOf(1)}
+    val imageResource = when (result) {
+        1 -> R.drawable.dice_1
+        2 -> R.drawable.dice_2
+        3 -> R.drawable.dice_3
+        4 -> R.drawable.dice_4
+        5 -> R.drawable.dice_5
+        else -> R.drawable.dice_6
+    }
+
+    Column (
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(R.drawable.dice_1)
+            ContentDescription = result.toString()
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Burron(onClick = { result = (1..6).random() }) {
+            Text(stringResourse(R.string.roll))
+        }
+    }
 }
 
-@Preview(showBackground = true)
+
+@Preview
 @Composable
-fun GreetingPreview() {
-    DiceRollerTheme {
-        Greeting("Android")
-    }
+fun DiceRollerApp() {
+    DiceWithButtonAndImage()
+
+}
+
+@Composable
+fun DiceWithButtonAndImage() {
+
 }
